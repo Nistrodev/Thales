@@ -115,7 +115,7 @@ if (mysqli_num_rows($result) == 0) {
                         </li>
                         <!-- Boutons des pages -->
                         <?php for ($i = 1; $i <= $numPages; $i++) { ?>
-                            <li class="page-item <?php if ($page == $i) echo "active"; ?>"><a class="page-link" href="gestion-articles.php?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>"><?php echo $i; ?></a></li>
+                            <li class="page-item <?php if ($page == $i) echo "active"; ?>"><a class="page-link" href="gestion-articles-sous-categories.php?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>"><?php echo $i; ?></a></li>
                         <?php
                         } ?>
                         <!-- Bouton Suivant -->

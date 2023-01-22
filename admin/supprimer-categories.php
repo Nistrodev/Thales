@@ -8,15 +8,15 @@ if (!(check_permission($conn, 'delete_categories'))) {
     $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
     header("Location: admin.php");
     exit;
-  }
+}
 
 // Récupérer l'ID de la sous catégories à partir de la requête GET
 $categories_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Si aucun ID de sous catégories n'a été spécifié, rediriger l'utilisateur vers la page de gestion des sous-catégories
 if (!$categories_id) {
-   header("Location: gestion-categories.php");
-   exit;
+    header("Location: gestion-categories.php");
+    exit;
 }
 
 
@@ -27,34 +27,48 @@ $categories = mysqli_fetch_assoc($result);
 
 // Si la sous catégorie n'a pas été trouvé, redirige l'utilisateur vers la page de gestion des sous catégories
 if (!$categories) {
-   header("Location: gestion-categories.php");
-   exit;
+    header("Location: gestion-categories.php");
+    exit;
 }
 
 // Si le formulaire a été soumis
 if (isset($_POST['submit'])) {
+    // Vérifier si la catégorie contient des sous-catégories
+    $sql = "SELECT COUNT(*) as count FROM subcategories WHERE parent_id = $categories_id";
+    $result = mysqli_query($conn, $sql);
+    $count = mysqli_fetch_assoc($result)['count'];
+
+    // Si il reste des sous-catégories dans la catégorie, afficher un message d'erreur
+    if ($count > 0) {
+        $_SESSION['message-failed'] = "Impossible de supprimer cette catégorie car elle contient des sous-catégories.";
+        header("Location: gestion-categories.php");
+        exit;
+    }
+
     // Supprimer l'utilisateur de la base de données
     $sql = "DELETE FROM categories WHERE id = $categories_id";
     mysqli_query($conn, $sql);
 
     // Ajouter un message de réussite
-   $_SESSION['message-success'] = "La catégorie à été supprimé avec succès.";
+    $_SESSION['message-success'] = "La catégorie à été supprimé avec succès.";
 
     // Rediriger l'utilisateur vers la page de gestion des sous catégories
     header("Location: gestion-categories.php");
     exit;
-    }
+}
 
-    ?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thales - Supprimer une catégorie</title>
 </head>
+
 <body>
     <!-- Sidebar -->
     <?php include "navbar-admin.php"; ?>
@@ -71,4 +85,5 @@ if (isset($_POST['submit'])) {
         </form>
     </div>
 </body>
+
 </html>
