@@ -129,7 +129,7 @@ $result = mysqli_query($conn, $sql);
       <?php $_SESSION['message-success'] = null; ?>
    <?php }
    if (isset($_SESSION['message-failed'])) {  ?>
-      <div class="alert alert-failed alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+      <div class="alert alert-danger alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
          <?php echo $_SESSION['message-failed']; ?>
          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
