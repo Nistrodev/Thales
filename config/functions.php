@@ -130,9 +130,9 @@ function get_permissions($conn)
     return $permissions;
 }
 
-function check_if_image_exists($conn, $file_name)
+function check_if_image_exists($conn, $name)
 {
-    $sql = "SELECT * FROM images WHERE file_name = '$file_name'";
+    $sql = "SELECT * FROM images WHERE name = '$name'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         return true;

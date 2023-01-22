@@ -43,11 +43,9 @@ $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <?php foreach ($images as $image) : ?>
                     <div class="col-3">
                         <div class="card mb-4">
-                            <img src="<?php echo $image['file_path']; ?>" alt="<?php echo $image['file_name']; ?>" class="card-img-top">
+                            <img src="<?php echo $image['file_path']; ?>" alt="<?php echo $image['name']; ?>" class="card-img-top">
                             <div class="card-body">
-                                <h5 class="card-title"><?php echo $image['file_name']; ?></h5>
-                                <a href="image.php?id=<?php echo $image['id']; ?>" class="btn btn-primary">Afficher</a>
-                                <a href="modifier-image.php?id=<?php echo $image['id']; ?>" class="btn btn-warning">Modifier</a>
+                                <h5 class="card-title"><?php echo $image['name']; ?></h5>
                                 <a href="supprimer-image.php?id=<?php echo $image['id']; ?>" class="btn btn-danger">Supprimer</a>
                             </div>
                         </div>
@@ -72,12 +70,21 @@ $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
 <!-- Message de notification -->
 <?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
     if (isset($_SESSION['message-success'])) { ?>
-        <div class="alert alert-success alert-dismissible fixed-bottom mr-5" role="alert">
+        <div class="alert alert-success alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
             <?php echo $_SESSION['message-success']; ?>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <?php $_SESSION['message-success'] = null; ?>
-    <?php }; ?>
-<?php }; ?>
+    <?php }
+    if (isset($_SESSION['message-failed'])) {  ?>
+        <div class="alert alert-success alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+            <?php echo $_SESSION['message-failed']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php $_SESSION['message-failed'] = null; ?>
+<?php }
+} ?>

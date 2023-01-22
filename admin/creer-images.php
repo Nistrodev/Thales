@@ -2,7 +2,6 @@
 // Importer la base de données
 include '../config.php';
 
-
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'add_images'))) {
     // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
@@ -14,24 +13,23 @@ if (!(check_permission($conn, 'add_images'))) {
 // Si le formulaire a été soumis
 if (isset($_POST['submit'])) {
     // Récupérer les données du formulaire
-    $file_name = mysqli_real_escape_string($conn, $_POST['name']);
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $file_name = $_FILES['image']['name'];
     $file_temp = $_FILES['image']['tmp_name'];
-    $file_ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-    $file_name = $file_name . '.' . $file_ext;
-    if(check_if_image_exists($conn, $file_name)) {
-        $_SESSION['message-success'] = "Ce nom d'image existe déjà, veuillez en choisir un autre.";
+    $file_path = "../uploads/" . $file_name;
+    move_uploaded_file($file_temp, $file_path);
+
+    // Vérifie si le nom d'image existe déjà
+    if (check_if_image_exists($conn, $name)) {
+        echo '<p class="text-danger text-center">Ce nom d\'image existe déjà, veuillez en choisir un autre.</p>';
     } else {
-        move_uploaded_file($file_temp, "../uploads/" . $file_name);
-        $file_path = "../uploads/" . $file_name;
-        $sql = "INSERT INTO `images`(`file_name`, `file_path`) VALUES ('$file_name', '$file_path')";
+        $sql = "INSERT INTO `images`(`name`, `file_name`, `file_path`) VALUES ('$name', '$file_name', '$file_path')";
         mysqli_query($conn, $sql);
-        $_SESSION['message-success'] = "Add";
+        $_SESSION['message-success'] = "Image ajouté avec succès";
+        // Rediriger l'utilisateur vers la page de gestion des catégories
         header("Location: gestion-images.php");
         exit;
     }
-}
- else {
-    $_SESSION['message-success'] = "Not add";
 }
 ?>
 <!DOCTYPE html>
@@ -56,30 +54,14 @@ if (isset($_POST['submit'])) {
                 <label for="name">Nom</label>
                 <input type="text" class="form-control" name="name" id="name" required>
                 <label for="image">Image</label>
-                <input type="file" class="form-control-file" name="image" id="image" required>
+                <input type="file" class="form-control-file" name="image" id="image" accept="image/*" required>
             </div>
+            <p class="error" style="display:none"></p>
             <!-- Bouton de soumission -->
             <a href="gestion-images.php" class="btn btn-secondary">Retour</a>
             <button type="submit" name="submit" id="submit" class="btn btn-primary">Ajouter</button>
-            <div id="file_name_error"></div>
-
         </form>
-
     </div>
-
 </body>
 
 </html>
-
-<!-- Message de notification -->
-<?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
-    if (isset($_SESSION['message-success'])) { ?>
-        <div class="alert alert-success alert-dismissible fixed-bottom mr-5" role="alert">
-            <?php echo $_SESSION['message-success']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <?php $_SESSION['message-success'] = null; ?>
-    <?php }; ?>
-<?php }; ?>
