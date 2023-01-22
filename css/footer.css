@@ -1,0 +1,48 @@
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer a {
+    color: #fff;
+}
+
+footer a:hover {
+    text-decoration: none;
+    color: #ddd;
+}
+
+footer i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+/* Utilisation de la classe de Bootstrap "text-white" pour le texte blanc */
+footer p.text-white {
+    color: #fff;
+}
+
+/* Utilisation de la classe de Bootstrap "btn-outline-light" pour les liens */
+footer a.btn-outline-light {
+    color: #fff;
+    border-color: #fff;
+}
+
+footer a.btn-outline-light:hover {
+    color: #ddd;
+    border-color: #ddd;
+}
+
+/* Utilisation de la classe de Bootstrap "fa" pour les icônes */
+footer i.fa {
+    font-size: 24px;
+    margin-right: 10px;
+}
