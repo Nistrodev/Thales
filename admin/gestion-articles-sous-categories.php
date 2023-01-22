@@ -8,7 +8,7 @@ $subcategory_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if (!$subcategory_id) {
     header("Location: gestion-articles.php");
     exit;
- }
+}
 
 
 // Requête pour récupérer les articles de la sous-catégorie
@@ -35,9 +35,9 @@ $result = mysqli_query($conn, $sql);
 // Si aucune catégorie n'a été trouvée
 if (mysqli_num_rows($result) == 0) {
     $cat = false;
- } else {
+} else {
     $cat = true;
- }
+}
 
 ?>
 
@@ -59,51 +59,51 @@ if (mysqli_num_rows($result) == 0) {
         <h1>Articles de la sous-catégorie <?php echo $subcategory_name; ?></h1>
 
         <!-- Tableau -->
-        <?php if(!empty($articles)) { ?>
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Prix</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($articles as $article) : ?>
+        <?php if (!empty($articles)) { ?>
+            <table class="table table-striped table-bordered">
+                <thead>
                     <tr>
-                        <td><?php echo $article['id']; ?></td>
-                        <td><?php echo $article['name']; ?></td>
-                        <td><?php echo $article['description']; ?></td>
-                        <td><?php echo $article['price']; ?></td>
-                        <?php if ($article['image'] == null) { ?>
-                            <td>Aucune image</td>
-                        <?php } else { ?>
-                            <td><img src="<?php echo $article['image']; ?>" alt="<?php echo $article['name']; ?>" style="width: 100px;"></td>
-                        <?php } ?>
-                        <td>
-                            <a href="../article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Voir</a>
-                            <a href="modifier-article.php?id=<?php echo $article['id']; ?>" class="btn btn-warning">Modifier</a>
-                            <a href="supprimer-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger">Supprimer</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Prix</th>
+                        <th>Image</th>
+                        <th>Actions</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($articles as $article) : ?>
+                        <tr>
+                            <td><?php echo $article['id']; ?></td>
+                            <td><?php echo $article['name']; ?></td>
+                            <td><?php echo $article['description']; ?></td>
+                            <td><?php echo $article['price']; ?></td>
+                            <?php if ($article['image'] == null) { ?>
+                                <td>Aucune image</td>
+                            <?php } else { ?>
+                                <td><img src="<?php echo $article['image']; ?>" alt="<?php echo $article['name']; ?>" style="width: 100px;"></td>
+                            <?php } ?>
+                            <td>
+                                <a href="../article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Voir</a>
+                                <a href="modifier-article.php?id=<?php echo $article['id']; ?>" class="btn btn-warning">Modifier</a>
+                                <a href="supprimer-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger">Supprimer</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         <?php } else { ?>
-         <div class="alert alert-warning" role="alert">
-            Il n'y a aucun articles pour cette catégorie.
-         </div>
-      <?php } ?>
+            <div class="alert alert-warning" role="alert">
+                Il n'y a aucun articles pour cette catégorie.
+            </div>
+        <?php } ?>
 
         <!-- Barre de pagination -->
         <!-- Div qui contiendra le menu de sélection du nombre de résultats par page -->
         <div>
             <div class="float-right">
                 <?php if ((check_permission($conn, 'create_articles'))) { ?>
-                    <a href="creer-articles.php" class="btn btn-success">Créer un article</a>
+                    <a href="creer-articles.php?subcategory_id=<?php echo $subcategory_id; ?>" class="btn btn-success">Créer un article</a>
                 <?php } ?>
             </div>
             <div class="float-left">
@@ -116,7 +116,7 @@ if (mysqli_num_rows($result) == 0) {
                         <!-- Boutons des pages -->
                         <?php for ($i = 1; $i <= $numPages; $i++) { ?>
                             <li class="page-item <?php if ($page == $i) echo "active"; ?>"><a class="page-link" href="gestion-articles.php?page=<?php echo $i; ?>&limit=<?php echo $limit; ?>"><?php echo $i; ?></a></li>
-                            <?php
+                        <?php
                         } ?>
                         <!-- Bouton Suivant -->
                         <li class="page-item <?php if ($page == $numPages) echo "disabled"; ?>">
@@ -133,3 +133,25 @@ if (mysqli_num_rows($result) == 0) {
 </body>
 
 </html>
+
+<!-- Message de notification -->
+<?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
+    if (isset($_SESSION['message-success'])) { ?>
+        <div class="alert alert-success alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+            <?php echo $_SESSION['message-success']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php $_SESSION['message-success'] = null; ?>
+    <?php }
+    if (isset($_SESSION['message-failed'])) {  ?>
+        <div class="alert alert-failed alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+            <?php echo $_SESSION['message-failed']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php $_SESSION['message-failed'] = null; ?>
+<?php }
+} ?>

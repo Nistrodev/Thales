@@ -28,6 +28,16 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
 
         <div class="alert alert-secondary" role="alert">
             <div class="row d-flex align-items-center justify-content-between">
+                <div id="total-users" class="col-auto text-secondary font-weight-bold">Nombre total d'images : <?php echo get_images_count($conn); ?></div>
+                <div class="col-auto">
+                    <?php if ((check_permission($conn, 'manage_images'))) { ?>
+                        <a href="gestion-images.php" class="btn btn-primary">Gérer les images</a>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-secondary" role="alert">
+            <div class="row d-flex align-items-center justify-content-between">
                 <div id="total-users" class="col-auto text-secondary font-weight-bold">Nombre total d'utilisateurs : <?php echo get_user_count($conn); ?></div>
                 <div class="col-auto">
                     <?php if ((check_permission($conn, 'manage_users'))) { ?>
@@ -36,7 +46,6 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
                 </div>
             </div>
         </div>
-
         <div class="alert alert-secondary" role="alert">
             <div class="row d-flex justify-content-between">
                 <div id="total-users" class="col-auto text-secondary font-weight-bold">Nombre total de rôles : <?php echo get_role_count($conn); ?></div>
@@ -67,9 +76,41 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
                 </div>
             </div>
         </div>
+        <div class="alert alert-secondary" role="alert">
+            <div class="row d-flex justify-content-between">
+                <div id="total-users" class="col-auto text-secondary font-weight-bold">Nombre total d'articles : <?php echo get_articles_count($conn); ?></div>
+                <div class="col-auto">
+                    <?php if ((check_permission($conn, 'manage_articles'))) { ?>
+                        <a href="gestion-articles.php" class="btn btn-primary">Gérer les articles</a>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
     </div>
 
 
 </body>
 
 </html>
+
+<!-- Message de notification -->
+<?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
+    if (isset($_SESSION['message-success'])) { ?>
+        <div class="alert alert-success alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+            <?php echo $_SESSION['message-success']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php $_SESSION['message-success'] = null; ?>
+    <?php }
+    if (isset($_SESSION['message-failed'])) {  ?>
+        <div class="alert alert-failed alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+            <?php echo $_SESSION['message-failed']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php $_SESSION['message-failed'] = null; ?>
+<?php }
+} ?>

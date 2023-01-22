@@ -110,6 +110,27 @@ function get_subcategories_count($conn)
     }
     return 0;
 }
+
+function get_images_count($conn)
+{
+    $sql = "SELECT COUNT(*) AS count FROM images";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['count'];
+    }
+    return 0;
+}
+function get_articles_count($conn)
+{
+    $sql = "SELECT COUNT(*) AS count FROM articles";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['count'];
+    }
+    return 0;
+}
 // Fonction pour récupérer toutes les permissions de la base de données
 function get_permissions($conn)
 {

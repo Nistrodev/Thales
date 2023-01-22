@@ -81,7 +81,10 @@ $result = mysqli_query($conn, $sql);
                      <?php if ((check_permission($conn, 'modify_subcategories')) or (check_permission($conn, 'delete_subcategories'))) { ?>
                         <td>
                            <!-- Boutons d'action -->
-                           <?php if ((check_permission($conn, 'modify_subcategories'))) { ?>
+                           <?php if ((check_permission($conn, 'view_articles'))) { ?>
+                              <a href="gestion-articles-sous-categories.php?id=<?php echo $subcategory['id']; ?>" class="btn btn-primary">Voir les articles</a>
+                           <?php }
+                           if ((check_permission($conn, 'modify_subcategories'))) { ?>
                               <a href="modifier-sous-categories.php?id=<?php echo $subcategory["id"]; ?>" class="btn btn-warning">Modifier</a>
                            <?php }
                            if ((check_permission($conn, 'delete_subcategories'))) { ?>
@@ -126,19 +129,28 @@ $result = mysqli_query($conn, $sql);
       </nav>
    </div>
    </div>
-
-   <!-- Message de notification -->
-   <?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
-      if (isset($_SESSION['message-success'])) { ?>
-         <div class="alert alert-success alert-dismissible fixed-bottom mr-5" role="alert">
-            <?php echo $_SESSION['message-success']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <?php $_SESSION['message-success'] = null; ?>
-      <?php }; ?>
-   <?php }; ?>
 </body>
 
 </html>
+
+<!-- Message de notification -->
+<?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
+   if (isset($_SESSION['message-success'])) { ?>
+      <div class="alert alert-success alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+         <?php echo $_SESSION['message-success']; ?>
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      <?php $_SESSION['message-success'] = null; ?>
+   <?php }
+   if (isset($_SESSION['message-failed'])) {  ?>
+      <div class="alert alert-failed alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+         <?php echo $_SESSION['message-failed']; ?>
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      <?php $_SESSION['message-failed'] = null; ?>
+<?php }
+} ?>

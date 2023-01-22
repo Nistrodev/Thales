@@ -10,10 +10,20 @@ if (!(check_permission($conn, 'create_articles'))) {
     exit;
 }
 
-$sql = "SELECT id, name FROM subcategories";
+// Récupération de l'ID de la sous-catégorie depuis l'URL
+$subcategory_id = isset($_GET['subcategory_id']) ? intval($_GET['subcategory_id']) : 0;
+
+// Requête pour récupérer toutes les sous-catégories
+$sql = "SELECT * FROM subcategories";
 $result = mysqli_query($conn, $sql);
 $subcategories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+// Si un ID de sous-catégorie a été spécifié, récupérer le nom de la sous-catégorie
+if ($subcategory_id) {
+    $sql = "SELECT name FROM subcategories WHERE id = $subcategory_id";
+    $result = mysqli_query($conn, $sql);
+    $subcategory_name = mysqli_fetch_assoc($result)['name'];
+}
 // Si le formulaire a été soumis
 if (isset($_POST['submit'])) {
     // Récupérer les données du formulaire
@@ -75,18 +85,36 @@ if (isset($_POST['submit'])) {
                     <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                     <label for="prix">Prix</label>
                     <input type="number" class="form-control" name="prix" id="prix" required>
-                    <label for="images">Image</label>
-                    <input type="file" class="form-control-file" name="images" id="images" required>
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <select class="form-control" id="image" name="image">
+                            <?php
+                            $sql = "SELECT * FROM images";
+                            $result = mysqli_query($conn, $sql);
+                            $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                            foreach ($images as $image) :
+                            ?>
+                                <option value="<?php echo $image['id']; ?>">
+                                    <?php echo $image['file_name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
                 </div>
                 <!-- Catégorie parente -->
                 <div class="form-group">
                     <label for="parent_id">Catégorie parente</label>
                     <select class="form-control" name="parent_id" id="parent_id" required>
-                        <!-- Liste des catégories -->
-                        <option value="" selected disabled hidden>Choissisez une sous-catégorie parente</option>
-                        <?php foreach ($subcategories as $subcategory) : ?>
-                            <option value="<?php echo $subcategory['id']; ?>"><?php echo $subcategory['name']; ?></option>
-                        <?php endforeach; ?>
+                        <?php if ($subcategory_id) { ?>
+                            <option value="<?php echo $subcategory_id; ?>" selected><?php echo $subcategory_name; ?></option>
+                        <?php } else { ?>
+                            <!-- Liste des catégories -->
+                            <option value="" selected disabled hidden>Choissisez une sous-catégorie parente</option>
+                            <?php foreach ($subcategories as $subcategory) { ?>
+                                <option value="<?php echo $subcategory['id']; ?>"><?php echo $subcategory['name']; ?></option>
+                        <?php }
+                        } ?>
                     </select>
                 </div>
                 <!-- Bouton de soumission -->

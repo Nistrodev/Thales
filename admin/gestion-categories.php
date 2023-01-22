@@ -135,16 +135,28 @@ $result = mysqli_query($conn, $sql);
       </nav>
    </div>
    </div>
+</body>
 
-   <!-- Message de notification -->
-   <?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
-      if (isset($_SESSION['message-success'])) { ?>
-         <div class="alert alert-success alert-dismissible fixed-bottom mr-5" role="alert">
-            <?php echo $_SESSION['message-success']; ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <?php $_SESSION['message-success'] = null; ?>
-      <?php }; ?>
-   <?php }; ?>
+</html>
+
+<!-- Message de notification -->
+<?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
+   if (isset($_SESSION['message-success'])) { ?>
+      <div class="alert alert-success alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+         <?php echo $_SESSION['message-success']; ?>
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      <?php $_SESSION['message-success'] = null; ?>
+   <?php }
+   if (isset($_SESSION['message-failed'])) {  ?>
+      <div class="alert alert-failed alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+         <?php echo $_SESSION['message-failed']; ?>
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      <?php $_SESSION['message-failed'] = null; ?>
+<?php }
+} ?>
