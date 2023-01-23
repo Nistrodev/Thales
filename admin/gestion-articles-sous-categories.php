@@ -1,11 +1,20 @@
 <?php
 require_once "../config.php";
 
+// Vérifie si l'utilisateur à la permission de voir la page
+if (!(check_permission($conn, 'manage_articles'))) {
+    // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
+    $_SESSION['message-failed'] = NO_PERMISSIONS;
+    header("Location: admin.php");
+    exit;
+}
+
 // Récupération de l'ID de la sous-catégorie depuis l'URL
 $subcategory_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Si aucun ID de sous catégories n'a été spécifié, rediriger l'utilisateur vers la page de gestion des articles
 if (!$subcategory_id) {
+    $_SESSION['message-failed'] = NO_ID_SUBCATEGORIES;
     header("Location: gestion-articles.php");
     exit;
 }
@@ -45,7 +54,7 @@ if (mysqli_num_rows($result) == 0) {
 <html>
 
 <head>
-    <title>Articles de la sous-catégorie <?php echo $subcategory_name; ?></title>
+    <title><?php echo ARTICLE_SUBCATEGORIES_MANAGE_TITLE?> <?php echo $subcategory_name; ?></title>
 </head>
 
 <body>
@@ -56,19 +65,19 @@ if (mysqli_num_rows($result) == 0) {
     <div class="container mt-4">
 
         <!-- Titre -->
-        <h1>Articles de la sous-catégorie <?php echo $subcategory_name; ?></h1>
+        <h1><?php echo ARTICLE_SUBCATEGORIES_MANAGE_TITLE?> <?php echo $subcategory_name; ?></h1>
 
         <!-- Tableau -->
         <?php if (!empty($articles)) { ?>
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Description</th>
-                        <th>Prix</th>
-                        <th>Image</th>
-                        <th>Actions</th>
+                        <th><?php echo ARTICLE_SUBCATEGORIES_MANAGE_ID?></th>
+                        <th><?php echo ARTICLE_SUBCATEGORIES_MANAGE_NAME?></th>
+                        <th><?php echo ARTICLE_SUBCATEGORIES_MANAGE_DESCRIPTION?></th>
+                        <th><?php echo ARTICLE_SUBCATEGORIES_MANAGE_PRICE?></th>
+                        <th><?php echo ARTICLE_SUBCATEGORIES_MANAGE_IMAGE?></th>
+                        <th><?php echo ARTICLE_SUBCATEGORIES_MANAGE_ACTIONS?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,23 +88,21 @@ if (mysqli_num_rows($result) == 0) {
                             <td><?php echo $article['description']; ?></td>
                             <td><?php echo $article['price']; ?></td>
                             <?php if ($article['image'] == null) { ?>
-                                <td>Aucune image</td>
+                                <td><?php echo ARTICLE_SUBCATEGORIES_MANAGE_NO_IMAGES?></td>
                             <?php } else { ?>
                                 <td><img src="<?php echo $article['image']; ?>" alt="<?php echo $article['name']; ?>" style="width: 100px;"></td>
                             <?php } ?>
                             <td>
-                                <a href="../article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Voir</a>
-                                <a href="modifier-article.php?id=<?php echo $article['id']; ?>" class="btn btn-warning">Modifier</a>
-                                <a href="supprimer-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger">Supprimer</a>
+                                <a href="../article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary"><?php echo VIEWS?></a>
+                                <a href="modifier-article.php?id=<?php echo $article['id']; ?>" class="btn btn-warning"><?php echo MODIFY?></a>
+                                <a href="supprimer-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger"><?php echo DELETE?></a>
                             </td>
                         </tr>
                     <?php }; ?>
                 </tbody>
             </table>
         <?php } else { ?>
-            <div class="alert alert-warning" role="alert">
-                Il n'y a aucun articles pour cette catégorie.
-            </div>
+            <div class="alert alert-warning" role="alert"><?php echo ARTICLE_SUBCATEGORIES_MANAGE_NO_ARTICLES?></div>
         <?php } ?>
 
         <!-- Barre de pagination -->
@@ -103,7 +110,7 @@ if (mysqli_num_rows($result) == 0) {
         <div>
             <div class="float-right">
                 <?php if ((check_permission($conn, 'create_articles'))) { ?>
-                    <a href="creer-articles.php?subcategory_id=<?php echo $subcategory_id; ?>" class="btn btn-success">Créer un article</a>
+                    <a href="creer-articles.php?subcategory_id=<?php echo $subcategory_id; ?>" class="btn btn-success"><?php echo ARTICLE_SUBCATEGORIES_MANAGE_CREATE_ARTICLE?></a>
                 <?php } ?>
             </div>
             <div class="float-left">
@@ -111,7 +118,7 @@ if (mysqli_num_rows($result) == 0) {
                     <ul class="pagination">
                         <!-- Bouton Précédent -->
                         <li class="page-item <?php if ($page == 1) echo "disabled"; ?>">
-                            <a class="page-link" href="gestion-articles.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>">Précédent</a>
+                            <a class="page-link" href="gestion-articles.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>"><?php echo PREVIOUS?></a>
                         </li>
                         <!-- Boutons des pages -->
                         <?php for ($i = 1; $i <= $numPages; $i++) { ?>
@@ -120,13 +127,13 @@ if (mysqli_num_rows($result) == 0) {
                         } ?>
                         <!-- Bouton Suivant -->
                         <li class="page-item <?php if ($page == $numPages) echo "disabled"; ?>">
-                            <a class="page-link" href="gestion-articles.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>">Suivant</a>
+                            <a class="page-link" href="gestion-articles.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>"><?php echo NEXT?></a>
                         </li>
                     </ul>
                 </nav>
             </div>
             <div style="text-align: center;">
-                <a href="gestion-articles.php" class="btn btn-secondary">Retour</a>
+                <a href="gestion-articles.php" class="btn btn-secondary"><?php echo RETOUR?></a>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'manage_categories'))) {
    // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-   $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+   $_SESSION['message-failed'] = NO_PERMISSIONS;
    header("Location: admin.php");
    exit;
 }
@@ -42,7 +42,7 @@ $result = mysqli_query($conn, $sql);
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Thales - Gestion des catégories</title>
+   <title>Thales - <?php echo CATEGORIES_MANAGE_TITLE?></title>
 </head>
 
 <body>
@@ -56,7 +56,7 @@ $result = mysqli_query($conn, $sql);
       <!-- Contenu de la page -->
       <form action="gestion-categories.php" method="get" class="form-inline my-2 my-lg-0">
          <input name="search" class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-         <button class="btn btn-outline-success my-2 my-sm-20" type="submit">Rechercher</button>
+         <button class="btn btn-outline-success my-2 my-sm-20" type="submit"><?php echo SEARCH?></button>
       </form>
 
       <!-- Tableau -->
@@ -64,11 +64,11 @@ $result = mysqli_query($conn, $sql);
          <table class="table table-striped table-bordered">
             <thead>
                <tr>
-                  <th><a>Id</a></th>
-                  <th><a>Nom</a></th>
-                  <th>Nombres de sous-catégories</a></th>
+                  <th><?php echo CATEGORIES_MANAGE_ID?></th>
+                  <th><?php echo CATEGORIES_MANAGE_NAME?></th>
+                  <th><?php echo CATEGORIES_MANAGE_NB_SUBCATEGORIES?></th>
                   <?php if ((check_permission($conn, 'modify_categories')) or (check_permission($conn, 'delete_categories'))) { ?>
-                     <th>Actions</th>
+                     <th><?php echo CATEGORIES_MANAGE_ACTIONS?></th>
                   <?php } ?>
                </tr>
             </thead>
@@ -91,10 +91,10 @@ $result = mysqli_query($conn, $sql);
                         <td>
                            <!-- Boutons d'action -->
                            <?php if ((check_permission($conn, 'modify_categories'))) { ?>
-                              <a href="modifier-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-warning">Modifier</a>
+                              <a href="modifier-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-warning"><?php MODIFY?></a>
                            <?php }
                            if ((check_permission($conn, 'delete_categories'))) { ?>
-                              <a href="supprimer-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger">Supprimer</a>
+                              <a href="supprimer-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger"><?php DELETE?></a>
                            <?php } ?>
                         </td>
                      <?php } ?>
@@ -104,23 +104,21 @@ $result = mysqli_query($conn, $sql);
             </tbody>
          </table>
       <?php } else { ?>
-         <div class="alert alert-warning" role="alert">
-            Il n'y a aucune catégorie.
-         </div>
+         <div class="alert alert-warning" role="alert"><?php echo CATEGORIES_MANAGE_NO_CATEGORIES?></div>
       <?php } ?>
 
       <!-- Barre de pagination -->
       <!-- Div qui contiendra le menu de sélection du nombre de résultats par page -->
       <div class="float-right">
          <?php if ((check_permission($conn, 'create_categories'))) { ?>
-            <a href="creer-categories.php" class="btn btn-success">Créer une catégorie</a>
+            <a href="creer-categories.php" class="btn btn-success"><?php CATEGORIES_MANAGE_CREATE_CATEGORIES?></a>
          <?php } ?>
       </div>
       <nav aria-label="Page navigation example">
          <ul class="pagination">
             <!-- Bouton Précédent -->
             <li class="page-item <?php if ($page == 1) echo "disabled"; ?>">
-               <a class="page-link" href="gestion-categories.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>">Précédent</a>
+               <a class="page-link" href="gestion-categories.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>"><?php PREVIOUS?></a>
             </li>
             <!-- Boutons des pages -->
             <?php for ($i = 1; $i <= $numPages; $i++) { ?>
@@ -129,7 +127,7 @@ $result = mysqli_query($conn, $sql);
             } ?>
             <!-- Bouton Suivant -->
             <li class="page-item <?php if ($page == $numPages) echo "disabled"; ?>">
-               <a class="page-link" href="gestion-categories.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>">Suivant</a>
+               <a class="page-link" href="gestion-categories.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>"><?php NEXT?></a>
             </li>
          </ul>
       </nav>

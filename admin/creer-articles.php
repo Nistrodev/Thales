@@ -5,7 +5,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'create_articles'))) {
     // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-    $_SESSION['message-success'] = "Vous n'avez pas la permission de voir cette page.";
+    $_SESSION['message-success'] = NO_PERMISSIONS;
     header("Location: admin.php");
     exit;
 }
@@ -45,6 +45,8 @@ if (isset($_POST['submit'])) {
         $sql = "INSERT INTO articles (name, description, price, image, subcategory_id) VALUES ('$name', '$description', '$price', '$image', '$parent_id')";
         mysqli_query($conn, $sql);
 
+        $_SESSION['message-success'] = ARTICLE_CREATE_SUCCESS;
+
         // Rediriger l'utilisateur vers la page de gestion des catégories
         header("Location: gestion-articles.php");
         exit;
@@ -58,7 +60,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thales - Création d'article</title>
+    <title>Thales - <?php echo ARTICLE_CREATE_TITLE?></title>
 </head>
 
 <body>
@@ -67,26 +69,26 @@ if (isset($_POST['submit'])) {
     <!-- Contenu principal -->
     <div class="container mt-4">
         <!-- Contenu de la page -->
-        <h1>Création d'article</h1>
+        <h1><?php echo ARTICLE_CREATE_TITLE?></h1>
         <?php if (empty($subcategories)) { ?>
             <div class="alert alert-warning" role="alert">
-                Il n'y a aucune sous-catégories disponible pour y créer un article.
+                <?php echo ARTICLE_CREATE_NO_SUBCATEGORIES ?>
             </div>
-            <a href="gestion-articles.php" class="btn btn-secondary">Retour</a>
-            <a href="gestion-sous-categories.php" class="btn btn-success">Créer une sous-catégorie</a>
+            <a href="gestion-articles.php" class="btn btn-secondary"><?php echo RETOUR?></a>
+            <a href="gestion-sous-categories.php" class="btn btn-success"><?php echo ARTICLE_CREATE_SUBCATEGORIES_BUTTON?></a>
         <?php } else { ?>
             <!-- Formulaire de création de sous-catégorie -->
             <form action="creer-articles.php" method="post">
                 <!-- Nom de la sous-catégorie -->
                 <div class="form-group">
-                    <label for="name">Nom</label>
+                    <label for="name"><?php echo ARTICLE_CREATE_NAME?></label>
                     <input type="text" class="form-control" name="name" id="name" required>
-                    <label for="description">Description</label>
+                    <label for="description"><?php echo ARTICLE_CREATE_DESCRIPTION?></label>
                     <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                    <label for="price">Prix</label>
-                    <input type="number" class="form-control" name="price" id="price" required>
+                    <label for="price"><?php echo ARTICLE_CREATE_PRICE?></label>
+                    <input type="number" class="form-control" name="price" id="price" min="1" required>
                     <div class="form-group">
-                        <label for="image">Image</label>
+                        <label for="image"><?php echo ARTICLE_CREATE_IMAGE?></label>
                         <select class="form-control" id="image" name="image">
                             <?php
                             $sql = "SELECT * FROM images";
@@ -95,7 +97,7 @@ if (isset($_POST['submit'])) {
                             foreach ($images as $image) {
                             ?>
 
-                                <option value="" selected disabled hidden>Choissisez une image</option>
+                                <option value="" selected disabled hidden><?php echo ARTICLE_CREATE_SELECT_IMAGES?></option>
                                 <option value="<?php echo $image['file_path']; ?>">
                                     <?php echo $image['name']; ?>
                                 </option>
@@ -106,13 +108,13 @@ if (isset($_POST['submit'])) {
                 </div>
                 <!-- Catégorie parente -->
                 <div class="form-group">
-                    <label for="parent_id">Catégorie parente</label>
+                    <label for="parent_id"><?php echo ARTICLE_CREATE_PARENT?></label>
                     <select class="form-control" name="parent_id" id="parent_id" required>
                         <?php if ($subcategory_id) { ?>
                             <option value="<?php echo $subcategory_id; ?>" selected><?php echo $subcategory_name; ?></option>
                         <?php } else { ?>
                             <!-- Liste des catégories -->
-                            <option value="" selected disabled hidden>Choissisez une sous-catégorie parente</option>
+                            <option value="" selected disabled hidden><?php echo ARTICLE_CREATE_SELECT_PARENT?></option>
                             <?php foreach ($subcategories as $subcategory) { ?>
                                 <option value="<?php echo $subcategory['id']; ?>"><?php echo $subcategory['name']; ?></option>
                         <?php }
@@ -120,8 +122,8 @@ if (isset($_POST['submit'])) {
                     </select>
                 </div>
                 <!-- Bouton de soumission -->
-                <a href="gestion-articles.php" class="btn btn-secondary">Retour</a>
-                <button type="submit" name="submit" class="btn btn-primary">Créer</button>
+                <a href="gestion-articles.php" class="btn btn-secondary"><?php echo RETOUR?></a>
+                <button type="submit" name="submit" class="btn btn-primary"><?php echo CREER?></button>
             </form>
         <?php } ?>
     </div>

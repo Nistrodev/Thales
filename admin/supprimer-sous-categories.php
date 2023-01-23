@@ -5,7 +5,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'delete_subcategories'))) {
     // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-    $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+    $_SESSION['message-failed'] = NO_PERMISSIONS;
     header("Location: admin.php");
     exit;
 }
@@ -15,6 +15,7 @@ $subcategories_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Si aucun ID de sous catégories n'a été spécifié, rediriger l'utilisateur vers la page de gestion des sous-catégories
 if (!$subcategories_id) {
+    $_SESSION['message-failed'] = NO_ID_SUBCATEGORIES;
     header("Location: gestion-sous-categories.php");
     exit;
 }
@@ -26,6 +27,7 @@ $subcategories = mysqli_fetch_assoc($result);
 
 // Si la sous catégorie n'a pas été trouvé, redirige l'utilisateur vers la page de gestion des sous catégories
 if (!$subcategories) {
+    $_SESSION['message-failed'] = NO_SUBCATEGORIES;
     header("Location: gestion-sous-categories.php");
     exit;
 }
@@ -38,7 +40,7 @@ if (isset($_POST['submit'])) {
     $count = mysqli_fetch_row($result)[0];
 
     if ($count > 0) {
-        $_SESSION['message-failed'] = "Il reste des articles dans cette sous-catégorie, vous ne pouvez pas la supprimer.";
+        $_SESSION['message-failed'] = SUBCATEGORIES_DELETE_ARTICLES;
         header("Location: gestion-sous-categories.php");
         exit;
     }
@@ -48,7 +50,7 @@ if (isset($_POST['submit'])) {
     mysqli_query($conn, $sql);
 
     // Ajouter un message de réussite
-    $_SESSION['message-success'] = "La sous catégories à été supprimé avec succès.";
+    $_SESSION['message-success'] = SUBCATEGORIES_DELETE_SUCCESS;
 
     // Rediriger l'utilisateur vers la page de gestion des sous catégories
     header("Location: gestion-sous-categories.php");
@@ -64,7 +66,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thales - Supprimer une sous-catégories</title>
+    <title>Thales - <?php echo SUBCATEGORIES_DELETE_TITLE?></title>
 </head>
 
 <body>
@@ -73,13 +75,13 @@ if (isset($_POST['submit'])) {
     <!-- Contenu principal -->
     <div class="container mt-4">
         <!-- Contenu de la page -->
-        <h1>Supprimer une Sous-catégories</h1>
+        <h1><?php echo SUBCATEGORIES_DELETE_TITLE?></h1>
 
-        <p>Êtes-vous sûr de vouloir supprimer la sous-catégories <strong><?php echo $subcategories["name"]; ?></strong> ?</p>
+        <p><?php echo SUBCATEGORIES_DELETE_CONFIRM?> <strong><?php echo $subcategories["name"]; ?></strong> ?</p>
 
         <form action="supprimer-sous-categories.php?id=<?php echo $subcategories_id; ?>" method="post">
-            <button type="submit" name="submit" class="btn btn-danger">Oui</button>
-            <a href="gestion-sous-categories.php" class="btn btn-secondary">Non</a>
+            <button type="submit" name="submit" class="btn btn-danger"><?php echo YES?></button>
+            <a href="gestion-sous-categories.php" class="btn btn-secondary"><?php echo NO?></a>
         </form>
     </div>
 </body>

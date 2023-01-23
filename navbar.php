@@ -11,7 +11,7 @@ $subcategories_result = mysqli_query($conn, $subcategories_query);
 $subcategories = mysqli_fetch_all($subcategories_result, MYSQLI_ASSOC);
 
 if (!$categories_result || !$subcategories_result) {
-  echo "Erreur MySQL : " . mysqli_error($conn);
+  echo ERROR_MYSQL . mysqli_error($conn);
 }
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -45,7 +45,7 @@ if (!$categories_result || !$subcategories_result) {
             <?php }; ?>
             <?php if (!$has_subcategories) : ?>
               <!-- Afficher un message si aucune sous-catégorie n'est trouvée -->
-              <a class="dropdown-item disabled" href="#">Aucune sous-catégorie trouvée</a>
+              <a class="dropdown-item disabled" href="#"><?php echo NO_SUBCATEGORIES; ?></a>
             <?php endif; ?>
           </div>
         </li>
@@ -68,24 +68,24 @@ if (!$categories_result || !$subcategories_result) {
               $credits = $row['credits'];
             }
             ?>
-            <a class="dropdown-item disabled" href="#"><?php echo $credits; ?> crédits</a>
-            <a class="dropdown-item" href="profil-utilisateurs.php?id=<?php echo $row["id"]; ?>">Mon profil</a>
-            <a class="dropdown-item" href="/reservations">Mes réservations</a>
+            <a class="dropdown-item disabled" href="#"><?php echo $credits; echo CREDITS?></a>
+            <a class="dropdown-item" href="profil-utilisateurs.php?id=<?php echo $row["id"]; ?>"><?php echo PROFIL;?></a>
+            <a class="dropdown-item" href="/reservations"><?php echo RESERVATIONS;?></a>
             <?php
             // Vérifier si l'utilisateur a la permission de voir le panel d'administration
             if ((check_permission($conn, 'view_admin_panel'))) {
             ?>
-              <a class="dropdown-item" href="admin/admin.php">Panel d'administrateur</a>
+              <a class="dropdown-item" href="admin/admin.php"><?php echo ADMIN_PANEL;?></a>
             <?php
             }
             ?>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="logout.php">Déconnexion</a>
+            <a class="dropdown-item" href="logout.php"><?php echo LOGOUT;?></a>
           </div>
         </li>
       <?php else : ?>
         <li class="nav-item">
-          <a class="btn btn-primary" href="login.php">Se connecter</a>
+          <a class="btn btn-primary" href="login.php"><?php echo LOGIN;?></a>
         </li>
       <?php endif; ?>
     </ul>

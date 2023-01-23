@@ -5,7 +5,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'view_roles_permissions'))) {
    // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-   $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+   $_SESSION['message-failed'] = NO_PERMISSIONS;
    header("Location: admin.php");
    exit;
  }
@@ -13,6 +13,7 @@ if (!(check_permission($conn, 'view_roles_permissions'))) {
 // Vérifier si l'ID du rôle a été envoyé en GET
 if (!isset($_GET["id"])) {
    // L'ID n'a pas été envoyé, redirigez l'utilisateur vers la page "gestion-roles.php"
+   $_SESSION['message-failed'] = NO_ID_ROLES;
    header("Location: gestion-roles.php");
    exit;
 } else {
@@ -53,7 +54,7 @@ foreach ($permissions as $permission) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Thales - Permissions du rôle</title>
+   <title>Thales - <?php echo VIEWS_PERMISSIONS_TITLE?></title>
 </head>
 <body>
 
@@ -64,16 +65,14 @@ foreach ($permissions as $permission) {
 <div class="container mt-4">
 
    <!-- Contenu de la page -->
-   <h2>Permissions du rôle <?php echo $row['name']; ?></h2>
+   <h2><?php echo VIEWS_PERMISSIONS_TITLE?> <?php echo $row['name']; ?></h2>
    <?php if (empty($row['permissions'])) { ?>
-    <div class="alert alert-warning" role="alert">
-      Le role <?php echo $row['name']; ?> n'a aucune permission.
-    </div>
+    <div class="alert alert-warning" role="alert"><?php echo VIEWS_PERMISSIONS_NO_PERMISSIONS1?><?php echo $row['name']; ?><?php echo VIEWS_PERMISSIONS_NO_PERMISSIONS2?></div>
    <?php } else { ?>
    <table class="table table-striped table-bordered">
       <thead>
          <tr>
-            <th>Permission</th>
+            <th><?php echo VIEWS_PERMISSIONS_PERMISSIONS?></th>
          </tr>
       </thead>
       <tbody>
@@ -86,7 +85,7 @@ foreach ($permissions as $permission) {
       </tbody>
    </table>
    <?php } ?>
-   <a href="gestion-roles.php" class="btn btn-secondary">Retour</a>
+   <a href="gestion-roles.php" class="btn btn-secondary"><?php echo RETOUR?></a>
 </div>
 
 </body>

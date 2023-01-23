@@ -5,7 +5,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'modify_articles'))) {
     // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-    $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+    $_SESSION['message-failed'] = NO_PERMISSIONS;
     header("Location: gestion-articles.php");
     exit;
 }
@@ -15,6 +15,7 @@ $article_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Si aucun ID d'article n'a été spécifié, rediriger l'utilisateur vers la page de gestion des articles
 if (!$article_id) {
+    $_SESSION['message-failed'] = NO_ID_ARTICLES;
     header("Location: gestion-articles.php");
     exit;
 }
@@ -31,6 +32,7 @@ $subcategories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // Si l'article n'a pas été trouvé, rediriger l'utilisateur vers la page de gestion des articles
 if (!$article) {
+    $_SESSION['message-failed'] = NO_ARTICLES;
     header("Location: gestion-articles.php");
     exit;
 }
@@ -49,7 +51,7 @@ if (isset($_POST['submit'])) {
     mysqli_query($conn, $update_sql);
 
     // Ajouter un message de réussite
-    $_SESSION['message-success'] = "L'article à été modifié avec succès.";
+    $_SESSION['message-success'] = ARTICLE_MODIFY_SUCCESS;
 
     // Rediriger l'utilisateur vers la page de gestion des articles
     header("Location: gestion-articles.php");
@@ -63,7 +65,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thales - Modifier un article</title>
+    <title>Thales - <?php echo ARTICLE_MODIFY_TITLE?></title>
 </head>
 
 <body>
@@ -72,29 +74,29 @@ if (isset($_POST['submit'])) {
     <!-- Contenu principal -->
     <div class="container mt-4">
         <!-- Contenu de la page -->
-        <h1>Modifier un article</h1>
+        <h1>M<?php echo ARTICLE_MODIFY_TITLE?></h1>
         <form action="modifier-article.php?id=<?php echo $article_id; ?>" method="post">
             <div class="form-group">
-                <label for="name">Nom</label>
+                <label for="name"><?php echo ARTICLE_MODIFY_NAME?></label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $article['name']; ?>">
             </div>
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="description"><?php echo ARTICLE_MODIFY_DESCRIPTION?></label>
                 <input type="text" class="form-control" id="description" name="description" value="<?php echo $article['description']; ?>">
             </div>
             <div class="form-group">
-                <label for="price">Prix</label>
+                <label for="price"><?php echo ARTICLE_MODIFY_PRICE?></label>
                 <input type="number" class="form-control" id="price" name="price" value="<?php echo $article['price']; ?>">
             </div>
             <div class="form-group">
-                <label for="image">Image</label>
+                <label for="image"><?php echo ARTICLE_MODIFY_IMAGE?></label>
                 <select class="form-control" id="image" name="image">
                     <?php
                     $sql = "SELECT * FROM images";
                     $result = mysqli_query($conn, $sql);
                     $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     ?>
-                    <option value="" selected disabled hidden>Choisissez une image</option>
+                    <option value="" selected disabled hidden><?php echo ARTICLE_MODIFY_SELECT_IMAGE?></option>
                     <?php foreach ($images as $image) { ?>
                         <option value="<?php echo $image['file_path']; ?>" <?php echo $article['image'] === $image['file_path'] ? 'selected' : ''; ?>>
                             <?php echo $image['name']; ?>
@@ -104,9 +106,9 @@ if (isset($_POST['submit'])) {
             </div>
 
             <div class="form-group">
-                <label for="parent_id">Sous-catégorie</label>
+                <label for="parent_id"><?php echo ARTICLE_MODIFY_SUBCATEGORIES?></label>
                 <select class="form-control" id="parent_id" name="parent_id">
-                    <option value="" selected disabled hidden>Choisissez une sous-catégorie</option>
+                    <option value="" selected disabled hidden><?php echo ARTICLE_MODIFY_SELECT_SUBCATEGORIES?></option>
                     <?php foreach ($subcategories as $subcategory) : ?>
                         <option value="<?php echo $subcategory['id']; ?>" <?php echo $article['subcategory_id'] === $subcategory['id'] ? 'selected' : ''; ?>>
                             <?php echo $subcategory['name']; ?>
@@ -114,8 +116,8 @@ if (isset($_POST['submit'])) {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <a href="gestion-articles.php" class="btn btn-secondary">Retour</a>
-            <button type="submit" name="submit" class="btn btn-primary">Modifier</button>
+            <a href="gestion-articles.php" class="btn btn-secondary"><?php echo RETOUR?></a>
+            <button type="submit" name="submit" class="btn btn-primary"><?php echo MODIFY?></button>
         </form>
     </div>
 </body>

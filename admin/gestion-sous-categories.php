@@ -4,7 +4,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'manage_subcategories'))) {
    // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-   $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+   $_SESSION['message-failed'] = NO_PERMISSIONS;
    header("Location: admin.php");
    exit;
 }
@@ -40,7 +40,7 @@ $result = mysqli_query($conn, $sql);
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Thales - Gestion des Sous-Catégories</title>
+   <title>Thales - <?php echo SUBCATEGORIES_MANAGE_TITLE?></title>
 </head>
 
 <body>
@@ -54,7 +54,7 @@ $result = mysqli_query($conn, $sql);
       <!-- Contenu de la page -->
       <form action="gestion-sous-categories.php" method="get" class="form-inline my-2 my-lg-0">
          <input name="search" class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-         <button class="btn btn-outline-success my-2 my-sm-20" type="submit">Rechercher</button>
+         <button class="btn btn-outline-success my-2 my-sm-20" type="submit"><?php echo SEARCH?></button>
       </form>
 
       <!-- Tableau -->
@@ -62,11 +62,11 @@ $result = mysqli_query($conn, $sql);
          <table class="table table-striped table-bordered">
             <thead>
                <tr>
-                  <th><a>Id</a></th>
-                  <th>Nom</th>
-                  <th>Catégorie Parente</th>
+                  <th><?php echo SUBCATEGORIES_MANAGE_ID?></th>
+                  <th><?php echo SUBCATEGORIES_MANAGE_NAME?></th>
+                  <th><?php echo SUBCATEGORIES_MANAGE_PARENT?></th>
                   <?php if ((check_permission($conn, 'modify_subcategories')) or (check_permission($conn, 'delete_subcategories'))) { ?>
-                     <th>Actions</th>
+                     <th><?php echo SUBCATEGORIES_MANAGE_ACTIONS?></th>
                   <?php } ?>
                </tr>
             </thead>
@@ -97,16 +97,14 @@ $result = mysqli_query($conn, $sql);
             </tbody>
          </table>
       <?php } else { ?>
-         <div class="alert alert-warning" role="alert">
-            Il n'y a aucune sous-catégorie.
-         </div>
+         <div class="alert alert-warning" role="alert"><?php echo SUBCATEGORIES_MANAGE_NO_SUBCATEGORIES?></div>
       <?php } ?>
 
       <!-- Barre de pagination -->
       <!-- Div qui contiendra le menu de sélection du nombre de résultats par page -->
       <div class="float-right">
          <?php if ((check_permission($conn, 'create_subcategories'))) { ?>
-            <a href="creer-sous-categories.php" class="btn btn-success">Créer une Sous-catégorie</a>
+            <a href="creer-sous-categories.php" class="btn btn-success"><?php echo SUBCATEGORIES_MANAGE_CREATE?></a>
          <?php } ?>
 
       </div>
@@ -114,7 +112,7 @@ $result = mysqli_query($conn, $sql);
          <ul class="pagination">
             <!-- Bouton Précédent -->
             <li class="page-item <?php if ($page == 1) echo "disabled"; ?>">
-               <a class="page-link" href="gestion-sous-categories.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>">Précédent</a>
+               <a class="page-link" href="gestion-sous-categories.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>"><?php echo PREVIOUS?></a>
             </li>
             <!-- Boutons des pages -->
             <?php for ($i = 1; $i <= $numPages; $i++) { ?>
@@ -123,7 +121,7 @@ $result = mysqli_query($conn, $sql);
             } ?>
             <!-- Bouton Suivant -->
             <li class="page-item <?php if ($page == $numPages) echo "disabled"; ?>">
-               <a class="page-link" href="gestion-sous-categories.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>">Suivant</a>
+               <a class="page-link" href="gestion-sous-categories.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>"><?php echo NEXT?></a>
             </li>
          </ul>
       </nav>

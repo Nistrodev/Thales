@@ -5,7 +5,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'modify_roles'))) {
    // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-   $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+   $_SESSION['message-failed'] = NO_PERMISSIONS;
    header("Location: admin.php");
    exit;
  }
@@ -15,6 +15,7 @@ $role_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Si aucun ID de rôle n'a été spécifié, rediriger l'utilisateur vers la page de gestion des rôles
 if (!$role_id) {
+   $_SESSION['message-failed'] = NO_ID_ROLES;
    header("Location: gestion-roles.php");
    exit;
 }
@@ -26,6 +27,7 @@ $role = mysqli_fetch_assoc($result);
 
 // Si le rôle n'a pas été trouvé, rediriger l'utilisateur vers la page de gestion des rôles
 if (!$role) {
+   $_SESSION['message-failed'] = NO_ROLES;
    header("Location: gestion-roles.php");
    exit;
 }
@@ -55,6 +57,8 @@ if (isset($_POST['submit'])) {
    }
    mysqli_query($conn, $sql);
 
+   $_SESSION['message-success'] = ROLES_MODIFY_SUCCESS;
+
    // Rediriger l'utilisateur vers la page de gestion des rôles
    header("Location: gestion-roles.php");
    exit;
@@ -66,7 +70,7 @@ if (isset($_POST['submit'])) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Thales - Modifier un rôle</title>
+   <title>Thales - <?php echo ROLES_MODIFY_TITLE?></title>
 </head>
 <body>
 <!-- Sidebar -->
@@ -74,12 +78,12 @@ if (isset($_POST['submit'])) {
 <!-- Contenu principal -->
 <div class="container mt-4">
    <!-- Contenu de la page -->
-   <h1>Modifier un rôle</h1>
+   <h1><?php echo ROLES_MODIFY_TITLE?></h1>
    <!-- Formulaire de modification de rôle -->
    <form action="modifier-roles.php?id=<?php echo $role_id; ?>" method="post">
       <!-- Champ nom du rôle -->
       <div class="form-group">
-         <label for="role-name">Nom du rôle</label>
+         <label for="role-name"><?php echo ROLES_MODIFY_NAME?></label>
          <?php if ($role['name'] == 'admin' || $role['name'] == 'user') { ?>
             <input type="text" class="form-control" name="role-name" id="role-name" value="<?php echo $role['name']; ?>" disabled>
          <?php } else { ?>
@@ -88,7 +92,7 @@ if (isset($_POST['submit'])) {
       </div>
       <!-- Liste de permissions -->
       <div class="form-group">
-         <label for="permissions">Permissions</label><br>
+         <label for="permissions"><?php echo ROLES_MODIFY_PERMISSIONS?></label><br>
          <!-- Récupérer les permissions disponibles depuis la base de données -->
          <?php
             $permissions = get_permissions($conn);
@@ -105,8 +109,8 @@ if (isset($_POST['submit'])) {
          ?>
       </div>
       <!-- Bouton de soumission -->
-      <a href="gestion-roles.php" class="btn btn-secondary">Retour</a>
-      <button type="submit" name="submit" class="btn btn-primary">Modifier le rôle</button>
+      <a href="gestion-roles.php" class="btn btn-secondary"><?php echo RETOUR?></a>
+      <button type="submit" name="submit" class="btn btn-primary"><?php echo MODIFY?></button>
    </form>
 </div>
 </body>

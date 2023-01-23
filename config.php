@@ -9,3 +9,5 @@ include_once 'config/functions.php';
 // inclure les librairies externes
 include_once 'lib/librairies.php';
 
+// inclure les messages
+include "config/messages/messages-fr.php";

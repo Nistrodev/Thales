@@ -5,7 +5,7 @@ require_once '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'manage_images'))) {
     // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-    $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+    $_SESSION['message-failed'] = NO_PERMISSIONS;
     header("Location: admin.php");
     exit;
 }
@@ -20,7 +20,7 @@ $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
 <html>
 
 <head>
-    <title>Gestion des images</title>
+    <title><?php echo IMAGES_MANAGE_TITLE?></title>
 </head>
 
 <body>
@@ -30,14 +30,10 @@ $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <!-- Contenu principal -->
     <div class="container mt-4">
 
-        <!-- Titre -->
-        <h1 class="text-center">Gestion des images</h1>
 
         <!-- Affichage des images -->
         <?php if (empty($images)) { ?>
-            <div class="alert alert-warning" role="alert">
-                Il n'y a aucune image disponible pour être visualisée.
-            </div>
+            <div class="alert alert-warning" role="alert"></div>
         <?php } else { ?>
             <div class="row">
                 <?php foreach ($images as $image) : ?>
@@ -46,7 +42,7 @@ $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
                             <img src="<?php echo $image['file_path']; ?>" alt="<?php echo $image['name']; ?>" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $image['name']; ?></h5>
-                                <a href="supprimer-image.php?id=<?php echo $image['id']; ?>" class="btn btn-danger">Supprimer</a>
+                                <a href="supprimer-image.php?id=<?php echo $image['id']; ?>" class="btn btn-danger"><?php echo DELETE?></a>
                             </div>
                         </div>
                     </div>
@@ -57,7 +53,7 @@ $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
         <div>
             <div class="float-right">
                 <?php if ((check_permission($conn, 'create_articles'))) { ?>
-                    <a href="creer-images.php" class="btn btn-success">Ajouter une image</a>
+                    <a href="creer-images.php" class="btn btn-success"><?php echo IMAGES_MANAGE_ADD?></a>
                 <?php } ?>
             </div>
 

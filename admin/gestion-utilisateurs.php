@@ -4,7 +4,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'manage_users'))) {
    // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-   $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+   $_SESSION['message-failed'] = NO_PERMISSIONS;
    header("Location: admin.php");
    exit;
 }
@@ -36,7 +36,7 @@ $result = mysqli_query($conn, $sql);
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Thales - Gestion des utilisateurs</title>
+   <title>Thales - <?php echo USERS_MANAGE_TITLE?>/title>
 </head>
 
 <body>
@@ -50,20 +50,20 @@ $result = mysqli_query($conn, $sql);
       <!-- Contenu de la page -->
       <form action="gestion-utilisateurs.php" method="get" class="form-inline my-2 my-lg-0">
          <input name="search" class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-         <button class="btn btn-outline-success my-2 my-sm-20" type="submit">Rechercher</button>
+         <button class="btn btn-outline-success my-2 my-sm-20" type="submit"><?php echo SEARCH?></button>
       </form>
 
       <!-- Tableau -->
       <table class="table table-striped table-bordered">
          <thead>
             <tr>
-               <th><a>Id</a></th>
-               <th><a>Username</a></th>
-               <th>Email</a></th>
-               <th>Crédits</a></th>
-               <th>Rôle</a></th>
+               <th><?php echo USERS_MANAGE_ID?></th>
+               <th><?php echo USERS_MANAGE_NAME?></th>
+               <th><?php echo USERS_MANAGE_EMAIL?></th>
+               <th><?php echo USERS_MANAGE_CREDITS?></th>
+               <th><?php echo USERS_MANAGE_ROLE?></th>
                <?php if ((check_permission($conn, 'modify_users')) or (check_permission($conn, 'delete_users'))) { ?>
-                  <th>Actions</th>
+                  <th><?php echo USERS_MANAGE_ACTIONS?></th>
                <?php } ?>
             </tr>
          </thead>
@@ -80,11 +80,11 @@ $result = mysqli_query($conn, $sql);
                      <td>
                         <!-- Boutons d'action -->
                         <?php if ((check_permission($conn, 'modify_users'))) { ?>
-                           <a href="modifier-utilisateur.php?id=<?php echo $row["id"]; ?>" class="btn btn-warning">Modifier</a>
+                           <a href="modifier-utilisateur.php?id=<?php echo $row["id"]; ?>" class="btn btn-warning"><?php echo MODIFY?></a>
                         <?php }
                         if (!($row['username'] == 'admin')) { ?>
                            <?php if ((check_permission($conn, 'delete_users'))) { ?>
-                              <a href="supprimer-utilisateur.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger">Supprimer</a>
+                              <a href="supprimer-utilisateur.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger"><?php echo DELETE?></a>
                            <?php } ?>
                         <?php } ?>
                      </td>
@@ -99,14 +99,14 @@ $result = mysqli_query($conn, $sql);
       <!-- Div qui contiendra le menu de sélection du nombre de résultats par page -->
       <div class="float-right">
          <?php if ((check_permission($conn, 'create_users'))) { ?>
-            <a href="creer-utilisateur.php" class="btn btn-success">Créer un utilisateur</a>
+            <a href="creer-utilisateur.php" class="btn btn-success"><?php echo USERS_MANAGE_CREATE?></a>
          <?php } ?>
       </div>
       <nav aria-label="Page navigation example">
          <ul class="pagination">
             <!-- Bouton Précédent -->
             <li class="page-item <?php if ($page == 1) echo "disabled"; ?>">
-               <a class="page-link" href="gestion-utilisateurs.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>">Précédent</a>
+               <a class="page-link" href="gestion-utilisateurs.php?page=<?php echo $page - 1; ?>&limit=<?php echo $limit; ?>"><?php echo PREVIOUS?></a>
             </li>
             <!-- Boutons des pages -->
             <?php for ($i = 1; $i <= $numPages; $i++) { ?>
@@ -115,7 +115,7 @@ $result = mysqli_query($conn, $sql);
             } ?>
             <!-- Bouton Suivant -->
             <li class="page-item <?php if ($page == $numPages) echo "disabled"; ?>">
-               <a class="page-link" href="gestion-utilisateurs.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>">Suivant</a>
+               <a class="page-link" href="gestion-utilisateurs.php?page=<?php echo $page + 1; ?>&limit=<?php echo $limit; ?>"><?php echo NEXT?></a>
             </li>
          </ul>
       </nav>

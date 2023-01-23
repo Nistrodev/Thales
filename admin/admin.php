@@ -3,6 +3,7 @@
 require_once '../config.php';
 // Vérifie si l'utilisateur a la permission de voir la page
 if ((!check_permission($conn, 'view_admin_panel'))) {
+    $_SESSION['message-failed'] = NO_PERMISSIONS;
     // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
     header("Location: ../index.php");
     exit;
@@ -12,7 +13,7 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
 <html>
 
 <head>
-    <title>Thales - Panel administrateur</title>
+    <title>Thales - <?php ADMIN_PANEL_TITLE?></title>
 </head>
 
 <body>
@@ -24,25 +25,25 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Modification du logo de la navbar</h5>
-                        <a href="modifier-logo-navbar.php" class="btn btn-primary">Modifier</a>
+                        <h5 class="card-title"><?php echo MODIFY_NAVBAR?></h5>
+                        <a href="modifier-logo-navbar.php" class="btn btn-primary"><?php echo MODIFY?></a>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Modification des liens des réseaux sociaux</h5>
-                        <a href="modifier-liens-reseaux-sociaux.php" class="btn btn-primary">Modifier</a>
+                        <h5 class="card-title"><?php echo MODIFY_SOCIAL_LINKS?></h5>
+                        <a href="modifier-liens-reseaux-sociaux.php" class="btn btn-primary"><?php echo MODIFY?></a>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Nombre total d'images: <?php echo get_images_count($conn); ?></h5>
+                        <h5 class="card-title"><?php echo MODIFY_IMAGES?> <?php echo get_images_count($conn); ?></h5>
                         <?php if ((check_permission($conn, 'manage_images'))) { ?>
-                            <a href="gestion-images.php" class="btn btn-primary">Gérer les images</a>
+                            <a href="gestion-images.php" class="btn btn-primary"><?php echo MANAGE_IMAGES?></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -50,9 +51,9 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Nombre total d'utilisateurs : <?php echo get_user_count($conn); ?></h5>
+                        <h5 class="card-title"><?php echo MODIFY_USERS?> <?php echo get_user_count($conn); ?></h5>
                         <?php if ((check_permission($conn, 'manage_users'))) { ?>
-                            <a href="gestion-utilisateurs.php" class="btn btn-primary">Gérer les utilisateurs</a>
+                            <a href="gestion-utilisateurs.php" class="btn btn-primary"><?php echo MANAGE_USERS?></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -60,9 +61,9 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Nombre total de rôles : <?php echo get_role_count($conn); ?></h5>
+                        <h5 class="card-title"><?php echo MODIFY_ROLES?> <?php echo get_role_count($conn); ?></h5>
                         <?php if ((check_permission($conn, 'manage_roles'))) { ?>
-                            <a href="gestion-roles.php" class="btn btn-primary">Gérer les rôles</a>
+                            <a href="gestion-roles.php" class="btn btn-primary"><?php echo MANAGE_ROLES?></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -70,9 +71,9 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Nombre total de catégories : <?php echo get_categories_count($conn); ?></h5>
+                        <h5 class="card-title"><?php echo MODIFY_CATEGORIES?> <?php echo get_categories_count($conn); ?></h5>
                         <?php if ((check_permission($conn, 'manage_categories'))) { ?>
-                            <a href="gestion-categories.php" class="btn btn-primary">Gérer les catégories</a>
+                            <a href="gestion-categories.php" class="btn btn-primary"><?php echo MANAGE_CATEGORIES?></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -80,9 +81,9 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Nombre total de sous-catégories : <?php echo get_subcategories_count($conn); ?></h5>
+                        <h5 class="card-title"><?php echo MODIFY_SUBCATEGORIES?> <?php echo get_subcategories_count($conn); ?></h5>
                         <?php if ((check_permission($conn, 'manage_subcategories'))) { ?>
-                            <a href="gestion-sous-categories.php" class="btn btn-primary">Gérer les sous-catégories</a>
+                            <a href="gestion-sous-categories.php" class="btn btn-primary"><?php echo MANAGE_SUBCATEGORIES?></a>
                         <?php } ?>
                     </div>
                 </div>
@@ -90,9 +91,9 @@ if ((!check_permission($conn, 'view_admin_panel'))) {
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Nombre total d'articles : <?php echo get_articles_count($conn); ?></h5>
+                        <h5 class="card-title"><?php echo MODIFY_ARTICLES?> <?php echo get_articles_count($conn); ?></h5>
                         <?php if ((check_permission($conn, 'manage_articles'))) { ?>
-                            <a href="gestion-articles.php" class="btn btn-primary">Gérer les articles</a>
+                            <a href="gestion-articles.php" class="btn btn-primary"><?php echo MANAGE_ARTICLES?></a>
                         <?php } ?>
                     </div>
                 </div>

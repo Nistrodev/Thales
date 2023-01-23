@@ -5,7 +5,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'delete_credits'))) {
     // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-    $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+    $_SESSION['message-failed'] = NO_PERMISSIONS;
     header("Location: admin.php");
     exit;
   }
@@ -15,6 +15,7 @@ $user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Si aucun ID d'utilisateur n'a été spécifié, rediriger l'utilisateur vers la page de gestion des credits
 if (!$user_id) {
+    $_SESSION['message-failed'] = NO_ID_USERS;
    header("Location: gestion-credits.php");
    exit;
 }
@@ -26,6 +27,7 @@ $user = mysqli_fetch_assoc($result);
 
 // Si l'utilisateur n'a pas été trouvé, rediriger l'utilisateur vers la page de gestion des credits
 if (!$user) {
+    $_SESSION['message-failed'] = NO_USERS;
    header("Location: gestion-credits.php");
    exit;
 }
@@ -38,7 +40,7 @@ if (isset($_POST['submit'])) {
     mysqli_query($conn, $sql);
 
     // Ajouter un message de réussite
-   $_SESSION['message-success'] = "Le nombre de crédits de l'utilisateur à été supprimé avec succès.";
+   $_SESSION['message-success'] = CREDITS_DELETE_SUCCESS;
 
     // Rediriger l'utilisateur vers la page de gestion des crédits
     header("Location: gestion-credits.php");
@@ -53,7 +55,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thales - Supprimer des crédits</title>
+    <title>Thales - <?php echo CREDITS_DELETE_TITLE?></title>
 </head>
 <body>
     <!-- Sidebar -->
@@ -61,13 +63,13 @@ if (isset($_POST['submit'])) {
     <!-- Contenu principal -->
     <div class="container mt-4">
         <!-- Contenu de la page -->
-        <h1>Supprimer les crédits</h1>
+        <h1><?php echo CREDITS_DELETE_TITLE?></h1>
 
-        <p>Êtes-vous sûr de vouloir supprimer les crédits de l'utilisateur <strong><?php echo $user["username"]; ?></strong> ?</p>
+        <p><?php echo CREDITS_DELETE_CONFIRM?> <strong><?php echo $user["username"]; ?></strong> ?</p>
 
         <form action="supprimer-credits.php?id=<?php echo $user_id; ?>" method="post">
-            <button type="submit" name="submit" class="btn btn-danger">Oui</button>
-            <a href="gestion-credits.php" class="btn btn-secondary">Non</a>
+            <button type="submit" name="submit" class="btn btn-danger"><?php echo YES?></button>
+            <a href="gestion-credits.php" class="btn btn-secondary"><?php echo NO?></a>
         </form>
     </div>
 </body>

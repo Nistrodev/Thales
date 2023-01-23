@@ -7,8 +7,9 @@ $subcategory_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Si aucun ID de sous catégories n'a été spécifié, rediriger l'utilisateur vers la page principale
 if (!$subcategory_id) {
-   header("Location: index.php");
-   exit;
+    $_SESSION['message-failed'] = NO_ID_SUBCATEGORIES;
+    header("Location: index.php");
+    exit;
 }
 
 // Récupération des articles de la sous-catégorie
@@ -17,7 +18,7 @@ $articles_result = mysqli_query($conn, $articles_query);
 $articles = mysqli_fetch_all($articles_result, MYSQLI_ASSOC);
 
 if (!$articles_result) {
-    echo "Erreur MySQL : " . mysqli_error($conn);
+    echo ERROR_MYSQL . mysqli_error($conn);
 }
 
 // Récupération de la sous-catégorie
@@ -26,7 +27,7 @@ $subcategory_result = mysqli_query($conn, $subcategory_query);
 $subcategory = mysqli_fetch_assoc($subcategory_result);
 
 if (!$subcategory_result) {
-    echo "Erreur MySQL : " . mysqli_error($conn);
+    echo ERROR_MYSQL . mysqli_error($conn);
 }
 ?>
 <!DOCTYPE html>
@@ -50,16 +51,16 @@ if (!$subcategory_result) {
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $article['name']; ?></h5>
                             <p class="card-text"><?php echo $article['description']; ?></p>
-                            <p class="card-text">Prix : <?php echo $article['price']; ?></p>
-                            <a href="article.php?id=<?php echo $article['id'];?>" class="btn btn-success">Voir</a>
-                            <a href="#" class="btn btn-primary">Réserver</a>
+                            <p class="card-text"><?php echo PRICE?> <?php echo $article['price']; ?></p>
+                            <a href="article.php?id=<?php echo $article['id']; ?>" class="btn btn-success">Voir</a>
+                            <a href="#" class="btn btn-primary"><?php echo RESERVE?></a>
                         </div>
                     </div>
                 </div>
             <?php } ?>
         </div>
     </div>
-    
+
     <?php require_once "footer.php"; ?>
 </body>
 

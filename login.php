@@ -8,6 +8,7 @@ require_once "navbar.php";
 
 // Si l'utilisateur est déjà connecté, redirige vers la page d'accueil
 if (is_logged()) {
+    $_SESSION['message-success'] = ALREADY_LOGGED;
     // Redirection vers la page protégée
     header("Location: index.php");
     exit;
@@ -33,38 +34,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Enregistrer le nom d'utilisateur dans la variable de session
             $_SESSION['username'] = $username;
 
+            // Affiche un message de succès
+            $_SESSION['message-success'] = LOGIN_SUCCESS;
+
             // Redirection vers la page protégée
             header("Location: index.php");
             exit;
         } else {
             // Mot de passe incorrect
             // Afficher un message d'erreur
-            $error = "Nom d'utilisateur ou mot de passe incorrect";
+            $error = USERNAME_PASSWORD_INCORRECT;
         }
     }
 }
-    ?>
-    <div class="container mt-5">
-    <h1>Connexion</h1>
+?>
+<div class="container mt-5">
+    <h1><?php echo CONNEXION?></h1>
     <?php if (isset($error)) { ?>
-    <div class="alert alert-danger">
-        <?php echo $error; ?>
-    </div>
+        <div class="alert alert-danger">
+            <?php echo $error; ?>
+        </div>
     <?php } ?>
     <form action="" method="post">
         <div class="form-group">
-            <label for="username">Identifiant</label>
+            <label for="username"><?php echo IDENTIFIANT?></label>
             <input type="text" class="form-control" id="username" name="username" required>
         </div>
         <div class="form-group">
-            <label for="password">Mot de passe</label>
+            <label for="password"><?php echo PASSWORD_LABEL?></label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Se connecter</button>
+        <button type="submit" class="btn btn-primary"><?php echo CONNECT?></button>
     </form>
 </div>
 
-    <?php
+<?php
 
 if (isset($error)) {
     echo $error;
@@ -74,3 +78,25 @@ if (isset($error)) {
 mysqli_close($conn);
 
 ?>
+
+<!-- Message de notification -->
+<?php if ((isset($_SESSION['message-success'])) || (isset($_SESSION['message-failed']))) {
+    if (isset($_SESSION['message-success'])) { ?>
+        <div class="alert alert-success alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+            <?php echo $_SESSION['message-success']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php $_SESSION['message-success'] = null; ?>
+    <?php }
+    if (isset($_SESSION['message-failed'])) {  ?>
+        <div class="alert alert-danger alert-dismissible position-fixed mr-2 float-right" style="bottom: 10px; right: 20px;">
+            <?php echo $_SESSION['message-failed']; ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php $_SESSION['message-failed'] = null; ?>
+<?php }
+} ?>

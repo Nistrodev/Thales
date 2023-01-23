@@ -5,7 +5,7 @@ include '../config.php';
 // Vérifie si l'utilisateur à la permission de voir la page
 if (!(check_permission($conn, 'create_categories'))) {
    // L'utilisateur n'a pas la permission, redirigez-le vers une autre page
-   $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
+   $_SESSION['message-failed'] = NO_PERMISSIONS;
    header("Location: admin.php");
    exit;
  }
@@ -23,6 +23,8 @@ if (isset($_POST['submit'])) {
     // Créer la catégorie
     mysqli_query($conn, $sql);
 
+   $_SESSION['message-success'] = CATEGORIES_CREATE_SUCCESS;
+
     // Rediriger l'utilisateur vers la page de gestion des catégories
     header("Location: gestion-categories.php");
     exit;
@@ -34,7 +36,7 @@ if (isset($_POST['submit'])) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Thales - Création de catégorie</title>
+   <title>Thales - <?php echo CATEGORIES_CREATE_TITLE?></title>
 </head>
 <body>
    <!-- Barre de navigation -->
@@ -42,17 +44,17 @@ if (isset($_POST['submit'])) {
    <!-- Contenu principal -->
    <div class="container mt-4">
       <!-- Contenu de la page -->
-      <h1>Création de catégorie</h1>
+      <h1><?php echo CATEGORIES_CREATE_TITLE?></h1>
       <!-- Formulaire de création de catégorie -->
       <form action="creer-categories.php" method="post">
          <!-- Nom de la catégorie -->
          <div class="form-group">
-            <label for="name">Nom</label>
+            <label for="name"><?php echo CATEGORIES_CREATE_NAME?></label>
             <input type="text" class="form-control" name="name" id="name" required>
          </div>
          <!-- Bouton de soumission -->
-         <a href="gestion-categories.php" class="btn btn-secondary">Retour</a>
-         <button type="submit" name="submit" class="btn btn-primary">Créer</button>
+         <a href="gestion-categories.php" class="btn btn-secondary"><?php echo RETOUR?></a>
+         <button type="submit" name="submit" class="btn btn-primary"><?php echo CREER?></button>
       </form>
    </div>
 </body>

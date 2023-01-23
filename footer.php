@@ -6,7 +6,7 @@ require_once "config.php"; ?>
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
-                <h4>Réseaux sociaux</h4>
+                <h4><?php echo SOCIAL_LINKS?></h4>
                 <ul class="list-inline">
                     <li class="list-inline-item">
                         <a href="https://www.linkedin.com/company/thales/">
@@ -36,19 +36,19 @@ require_once "config.php"; ?>
                 </ul>
             </div>
             <div class="col-sm-4">
-                <h4>Contactez-nous</h4>
+                <h4><?php echo CONTACT_US?></h4>
                 <ul class="list-unstyled">
                     <li class="phone"></li>
                 </ul>
             </div>
             <div class="col-sm-4">
-                <h4>Informations</h4>
+                <h4><?php echo INFOS?></h4>
                 <ul class="list-unstyled">
                     <li>
-                        <a href="#">Conditions générales d'utilisation</a>
+                        <a href="#"><?php echo CONDITIONS?></a>
                     </li>
                     <li>
-                        <a href="#">Crédits</a>
+                        <a href="#"><?php echo CREDITS?></a>
                     </li>
                 </ul>
             </div>

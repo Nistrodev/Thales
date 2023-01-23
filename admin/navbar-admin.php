@@ -27,48 +27,48 @@
         <div class="nav_list">
           <a href="admin.php" class="nav_link">
             <i class='bx bx-grid-alt nav_icon'></i>
-            <span class="nav_name">Accueil</span>
+            <span class="nav_name"><?php echo NAVBAR_ADMIN_HOME?></span>
           </a>
           <?php if ((check_permission($conn, 'manage_images'))) { ?>
             <a href="gestion-images.php" class="nav_link">
               <i class='bx bx-images nav_icon'></i>
-              <span class="nav_name">Gestion des images</span>
+              <span class="nav_name"><?php echo NAVBAR_ADMIN_IMAGES?></span>
             </a>
           <?php }
           if ((check_permission($conn, 'manage_users'))) { ?>
             <a href="gestion-utilisateurs.php" class="nav_link">
               <i class='bx bx-user nav_icon'></i>
-              <span class="nav_name">Gestion des utilisateurs</span>
+              <span class="nav_name"><?php echo NAVBAR_ADMIN_USERS?></span>
             </a>
           <?php }
           if ((check_permission($conn, 'manage_roles'))) { ?>
             <a href="gestion-roles.php" class="nav_link">
               <i class='bx bx-bot nav_icon'></i>
-              <span class="nav_name">Gestion des Rôles</span>
+              <span class="nav_name"><?php echo NAVBAR_ADMIN_ROLES?></span>
             </a>
           <?php }
           if ((check_permission($conn, 'manage_credits'))) { ?>
             <a href="gestion-credits.php" class="nav_link">
               <i class='bx bx-money nav_icon'></i>
-              <span class="nav_name">Gestion des Crédits</span>
+              <span class="nav_name"><?php echo NAVBAR_ADMIN_CREDITS?></span>
             </a>
           <?php }
           if ((check_permission($conn, 'manage_categories'))) { ?>
             <a href="gestion-categories.php" class="nav_link">
               <i class='bx bx-folder nav_icon'></i>
-              <span class="nav_name">Gestion des Catégories</span>
+              <span class="nav_name"><?php echo NAVBAR_ADMIN_CATEGORIES?></span>
             </a>
           <?php }
           if ((check_permission($conn, 'manage_subcategories'))) { ?>
             <a href="gestion-sous-categories.php" class="nav_link">
               <i class='bx bx-bar-chart-alt-2 nav_icon'></i>
-              <span class="nav_name">Gestion des Sous-Catégories</span>
+              <span class="nav_name"><?php echo NAVBAR_ADMIN_SUBCATEGORIES?></span>
             </a>
           <?php }
           if ((check_permission($conn, 'manage_articles'))) { ?>
             <a href="gestion-articles.php" class="nav_link">
               <i class='bx bx-cart nav_icon'></i>
-              <span class="nav_name">Gestion des articles</span>
+              <span class="nav_name"><?php echo NAVBAR_ADMIN_ARTICLES?></span>
             </a>
           <?php } ?>
         </div>
@@ -76,7 +76,7 @@
 
       <a href="../index.php" class="nav_link">
         <i class='bx bx-log-out nav_icon'></i>
-        <span class="nav_name">Retour au site</span>
+        <span class="nav_name"><?php echo NAVBAR_ADMIN_RETURN?></span>
       </a>
     </nav>
   </div>
