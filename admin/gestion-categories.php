@@ -91,10 +91,10 @@ $result = mysqli_query($conn, $sql);
                         <td>
                            <!-- Boutons d'action -->
                            <?php if ((check_permission($conn, 'modify_categories'))) { ?>
-                              <a href="modifier-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-warning"><?php MODIFY?></a>
+                              <a href="modifier-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-warning"><?php echo MODIFY?></a>
                            <?php }
                            if ((check_permission($conn, 'delete_categories'))) { ?>
-                              <a href="supprimer-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger"><?php DELETE?></a>
+                              <a href="supprimer-categories.php?id=<?php echo $row["id"]; ?>" class="btn btn-danger"><?php echo DELETE?></a>
                            <?php } ?>
                         </td>
                      <?php } ?>
@@ -111,7 +111,7 @@ $result = mysqli_query($conn, $sql);
       <!-- Div qui contiendra le menu de sélection du nombre de résultats par page -->
       <div class="float-right">
          <?php if ((check_permission($conn, 'create_categories'))) { ?>
-            <a href="creer-categories.php" class="btn btn-success"><?php CATEGORIES_MANAGE_CREATE_CATEGORIES?></a>
+            <a href="creer-categories.php" class="btn btn-success"><?php echo CATEGORIES_MANAGE_CREATE_CATEGORIES?></a>
          <?php } ?>
       </div>
       <nav aria-label="Page navigation example">

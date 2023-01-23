@@ -83,14 +83,14 @@ if (isset($_POST['submit'])) {
         var img = $("#img");
         if (img.attr("src") === "") {
             $("img").css("display", "none");
-            $("p").html(<?php echo LOGO_NAVBAR_MODIFY_NO_SOURCE?>);
+            $("p").html("<?php echo LOGO_NAVBAR_MODIFY_NO_SOURCE?>");
         }
         $(document).ready(function() {
             $('#image').on('change', function() {
                 var image = this.value;
                 $('img').attr('src', image);
                 if (image == "") {
-                    $('img').text(<?php echo LOGO_NAVBAR_MODIFY_NO_IMAGES_SELECTED?>);
+                    $('img').text("<?php echo LOGO_NAVBAR_MODIFY_NO_IMAGES_SELECTED?>");
                 } else {
                     $('img').text("");
                 }

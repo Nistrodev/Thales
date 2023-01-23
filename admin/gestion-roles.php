@@ -54,7 +54,7 @@ $result = mysqli_query($conn, $sql);
       <!-- Contenu de la page -->
       <form action="gestion-roles.php" method="get" class="form-inline my-2 my-lg-0">
          <input name="search" class="form-control mr-sm-2" type="search" placeholder="Recherche" aria-label="Search">
-         <button class="btn btn-outline-success my-2 my-sm-20" type="submit"><?php SEARCH?></button>
+         <button class="btn btn-outline-success my-2 my-sm-20" type="submit"><?php echo SEARCH?></button>
       </form>
 
       <!-- Tableau -->
