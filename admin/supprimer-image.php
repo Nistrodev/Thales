@@ -32,6 +32,7 @@ if (!$image) {
 
 // Si le formulaire a été soumis
 if (isset($_POST['submit'])) {
+
     // Supprimer l'image de la base de données
     $sql = "DELETE FROM images WHERE id = $image_id";
     mysqli_query($conn, $sql);

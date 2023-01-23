@@ -161,3 +161,14 @@ function check_if_image_exists($conn, $name)
         return false;
     }
 }
+
+function get_user_id()
+{
+    if (is_logged()) {
+        // Récupération de l'ID de l'utilisateur connecté
+        $user_id = $_SESSION['user_id'];
+        return $user_id;
+    } else {
+        return false;
+    }
+}

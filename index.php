@@ -14,3 +14,6 @@ if (!isset($_SESSION['username'])) {
     // Afficher le message "Bienvenue, utilisateur_connecté"
     echo "Bienvenue, " . $_SESSION['username'];
 }
+
+require_once "footer.php";
+?>

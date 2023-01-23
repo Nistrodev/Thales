@@ -31,7 +31,7 @@ $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="container mt-4">
 
         <!-- Titre -->
-        <h1>Gestion des images</h1>
+        <h1 class="text-center">Gestion des images</h1>
 
         <!-- Affichage des images -->
         <?php if (empty($images)) { ?>

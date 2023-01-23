@@ -17,7 +17,7 @@ $result = mysqli_query($conn, $sql);
 $articles = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // Requête pour récupérer le nom de la sous-catégorie
-$sql = "SELECT name FROM subcategories WHERE id = $subcategory_id";
+$sql = "SELECT * FROM subcategories WHERE id = $subcategory_id";
 $result = mysqli_query($conn, $sql);
 $subcategory_name = mysqli_fetch_assoc($result)['name'];
 
@@ -72,7 +72,7 @@ if (mysqli_num_rows($result) == 0) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($articles as $article) : ?>
+                    <?php foreach ($articles as $article) { ?>
                         <tr>
                             <td><?php echo $article['id']; ?></td>
                             <td><?php echo $article['name']; ?></td>
@@ -89,7 +89,7 @@ if (mysqli_num_rows($result) == 0) {
                                 <a href="supprimer-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger">Supprimer</a>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php }; ?>
                 </tbody>
             </table>
         <?php } else { ?>

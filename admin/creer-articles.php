@@ -83,8 +83,8 @@ if (isset($_POST['submit'])) {
                     <input type="text" class="form-control" name="name" id="name" required>
                     <label for="description">Description</label>
                     <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                    <label for="prix">Prix</label>
-                    <input type="number" class="form-control" name="prix" id="prix" required>
+                    <label for="price">Prix</label>
+                    <input type="number" class="form-control" name="price" id="price" required>
                     <div class="form-group">
                         <label for="image">Image</label>
                         <select class="form-control" id="image" name="image">
@@ -92,12 +92,14 @@ if (isset($_POST['submit'])) {
                             $sql = "SELECT * FROM images";
                             $result = mysqli_query($conn, $sql);
                             $images = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                            foreach ($images as $image) :
+                            foreach ($images as $image) {
                             ?>
-                                <option value="<?php echo $image['id']; ?>">
-                                    <?php echo $image['file_name']; ?>
+
+                                <option value="" selected disabled hidden>Choissisez une image</option>
+                                <option value="<?php echo $image['file_path']; ?>">
+                                    <?php echo $image['name']; ?>
                                 </option>
-                            <?php endforeach; ?>
+                            <?php }; ?>
                         </select>
                     </div>
 

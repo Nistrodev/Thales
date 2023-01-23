@@ -8,7 +8,7 @@ if (!(check_permission($conn, 'modify_subcategories'))) {
    $_SESSION['message-failed'] = "Vous n'avez pas la permission de voir cette page.";
    header("Location: admin.php");
    exit;
- }
+}
 
 // Récupérer l'ID de la sous catégories à partir de la requête GET
 $subcategories_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -30,9 +30,9 @@ $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // Si la sous catégorie n'a pas été trouvé, redirige l'utilisateur vers la page de gestion des sous catégories
 if (!$subcategories) {
-    header("Location: gestion-sous-categories.php");
-    exit;
- }
+   header("Location: gestion-sous-categories.php");
+   exit;
+}
 
 // Si le formulaire a été soumis
 if (isset($_POST['submit'])) {
@@ -54,16 +54,18 @@ if (isset($_POST['submit'])) {
    // Rediriger l'utilisateur vers la page de gestion des sous-catégories
    header("Location: gestion-sous-categories.php");
    exit;
-   }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Thales - Modification sous-catégorie</title>
 </head>
+
 <body>
    <!-- Barre de navigation -->
    <?php include "navbar-admin.php"; ?>
@@ -81,12 +83,13 @@ if (isset($_POST['submit'])) {
          <!-- Catégorie parente -->
          <div class="form-group">
             <label for="parent_id">Catégorie parente</label>
-            <select class="form-control" name="parent_id" id="parent_id">
-               <!-- Liste des catégories -->
-               <option value="" selected disabled hidden>Choissisez une catégorie</option>
-               <?php foreach ($categories as $category): ?>
-                  <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
-               <?php endforeach; ?>
+            <select class="form-control" id="parent_id" name="parent_id">
+               <option value="" selected disabled hidden>Choisissez une catégorie</option>
+               <?php foreach ($categories as $category) { ?>
+                  <option value="<?php echo $category['id']; ?>" <?php echo $subcategories['parent_id'] === $category['id'] ? 'selected' : ''; ?>>
+                     <?php echo $category['name']; ?>
+                  </option>
+               <?php } ?>
             </select>
          </div>
          <!-- Bouton de soumission -->
@@ -95,4 +98,5 @@ if (isset($_POST['submit'])) {
       </form>
    </div>
 </body>
+
 </html>
