@@ -68,6 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </div>
 
+<?php require_once "footer.php";?>
+
 <?php
 
 if (isset($error)) {

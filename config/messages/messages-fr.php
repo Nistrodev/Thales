@@ -12,6 +12,7 @@ define("SEARCH", "Rechercher");
 define("ADD", "Ajouter");
 define("YES", "Oui");
 define("NO", "Non");
+define("NO_PERMISSIONS", "Vous n'avez pas la permission d'accéder à cette page.");
 define("VIEWS_PERMISSIONS", "Voir les permissions");
 define("NO_ID_USERS", "Aucun ID d'utilisateur n'a été spécifié.");
 define("NO_USERS", "Aucun utilisateur n'a été trouvé.");
@@ -79,7 +80,6 @@ define("START_DATE", "Date dé début");
 define("END_DATE", "Date de fin");
 
 // Admin panel
-define("NO_PERMISSIONS", "Vous n'avez pas la permission d'accéder à cette page.");
 define("ADMIN_PANEL_TITLE", "Panel d'administateur");
 define("MODIFY_NAVBAR", "Modification du logo de la navbar");
 define("MODIFY_SOCIAL_LINKS", "Modification des liens des réseaux sociaux");

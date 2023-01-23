@@ -68,7 +68,7 @@ if (!$categories_result || !$subcategories_result) {
               $credits = $row['credits'];
             }
             ?>
-            <a class="dropdown-item disabled" href="#"><?php echo $credits; echo CREDITS?></a>
+            <a class="dropdown-item disabled" href="#"><?php echo $credits . " "; echo CREDITS?></a>
             <a class="dropdown-item" href="profil-utilisateurs.php?id=<?php echo $row["id"]; ?>"><?php echo PROFIL;?></a>
             <a class="dropdown-item" href="/reservations"><?php echo RESERVATIONS;?></a>
             <?php

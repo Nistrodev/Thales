@@ -5,16 +5,6 @@ session_start();
 
 require_once "navbar.php";
 
-// Si l'utilisateur n'est pas connecté
-if (!isset($_SESSION['username'])) {
-    // Afficher le message "Vous devez vous connecter pour accéder à cette page"
-    echo NO_CONNECTED;
-} else {
-    // L'utilisateur est connecté
-    // Afficher le message "Bienvenue, utilisateur_connecté"
-    echo BIENVENUE . $_SESSION['username'];
-}
-
 require_once "footer.php";
 ?>
 

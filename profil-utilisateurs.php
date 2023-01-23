@@ -54,6 +54,8 @@ if (!$user) {
             <a href="index.php" class="btn btn-secondary"><?php echo RETOUR?></a>
         </div>
     </div>
+
+    <?php require_once "footer.php"; ?>
 </body>
 
 </html>
